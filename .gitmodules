@@ -1,0 +1,6 @@
+[submodule "newmodule"]
+	path = newmodule
+	url = https://github.com/tst2005/lua-newmodule.git
+[submodule "provide"]
+	path = provide
+	url = https://github.com/tst2005/lua-provide.git
