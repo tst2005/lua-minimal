@@ -9,13 +9,13 @@ path = path ~= "" and path.."." or ""        --      it is NOT AVAILABLE at this
 
 -- Load newmodule
 --  Direct load, no "newmodule" or "newmodule.init" at this step :
-local newmodule = require(path .. "newmodule.newmodule")
+local newmodule = require(path .. "newmodule")
 
 -- Load provide
 --  Direct load, no "provid
-local provide_modname = path .. "provide.provide"
+local provide_modname = path .. "provide"
 local provide = require(provide_modname)
--- Warning: provide.provide can not use "newmodule"
+-- Warning: provide can not use "newmodule"
 --          it's not a strict "newmodule" format
 
 if not provide._NAME and not provide._PATH then
@@ -31,11 +31,14 @@ provide("provide", provide, not "forced")
 -- Setup newmodule
 provide("newmodule", newmodule, not "forced")
 
--- Creaqte the module itself : usefull to check if the framework is initialised.
-local _M = newmodule(...)
+-- Create the module itself : usefull to check if the framework is initialised.
+local _M, crequire, brequire = newmodule(...)
 
--- Should with Fix the path in minimal ? => No
---	require(path .. "pathfix").install()
+-- Fix the path in minimal ? => Yes by default
+local pathfix = crequire("pathfix")
+if pathfix.autoinstall then
+	pathfix.install() -- fix the package.path : add ./?/init.lua if not exists
+end
 
 -- Called directly with *.minimal.init ? provide the *.minimal
 if calledpath:find("%.init$") then
